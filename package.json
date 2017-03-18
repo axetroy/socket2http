@@ -1,0 +1,34 @@
+{
+  "name": "socket2http",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "webpack-dev-server --hot --quiet --config webpack.config.js --host 0.0.0.0",
+    "build": "webpack --display-error-details --progress --colors",
+    "watch": "webpack --display-error-details --progress --colors --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/axetroy/socket2http.git"
+  },
+  "author": "Axetroy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/axetroy/socket2http/issues"
+  },
+  "homepage": "https://github.com/axetroy/socket2http#readme",
+  "devDependencies": {
+    "axios": "^0.15.3",
+    "babel-core": "^6.24.0",
+    "babel-loader": "^6.4.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.2",
+    "ws": "^2.2.1"
+  },
+  "dependencies": {
+    "@axetroy/event-emitter.js": "^1.1.1",
+    "babel-preset-es2015": "^6.24.0"
+  }
+}
