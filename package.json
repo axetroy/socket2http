@@ -28,7 +28,7 @@
     "ws": "^2.2.1"
   },
   "dependencies": {
-    "@axetroy/event-emitter.js": "^1.1.1",
+    "@axetroy/event-emitter.js": "^1.2.1",
     "babel-preset-es2015": "^6.24.0"
   }
 }
