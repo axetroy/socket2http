@@ -4,7 +4,7 @@ const path = require('path');
 // webpack.config.js
 module.exports = {
   entry: {
-    "socket2http": path.join(__dirname, 'index.js')
+    socket2http: path.join(__dirname, 'index.js')
   },
   output: {
     path: path.join(__dirname, '/dist'),

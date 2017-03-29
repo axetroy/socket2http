@@ -1,18 +1,20 @@
 /**
  * Created by axetroy on 2017/3/18.
  */
+const EventEmitter = require('events').EventEmitter;
 const WebSocket = require('ws');
 const axios = require('axios');
 
 let WebSocketServer = WebSocket.Server;
-let wss = new WebSocketServer({port: 10086});
+let wss = new WebSocketServer({ port: 10086 });
+
+const event = new EventEmitter();
+
+exports.event = event;
 
 wss.on('connection', function connection(ws) {
-
   wss.clients.forEach(function each(client) {
-    if (client.readyState === WebSocket.OPEN) {
-      client.send('hello world');
-    }
+    event.emit('open', client);
   });
 
   ws.on('message', function incoming(message) {
@@ -26,20 +28,18 @@ wss.on('connection', function connection(ws) {
       req.url = request.url;
       req.data = request.body;
       req.headers = request.headers;
-    } catch (err) {
-
-    }
+    } catch (err) {}
     if (req) {
       axios(req)
-        .then(function (res) {
-          const response = {data: res.data};
+        .then(function(res) {
+          const response = { data: res.data };
           if (req.headers.id) {
             response.id = req.headers.id;
           }
           ws.send(JSON.stringify(response));
         })
-        .catch(function (err) {
-          const response = {data: err + ''};
+        .catch(function(err) {
+          const response = { data: err + '' };
           if (req.headers.id) {
             response.id = req.headers.id;
           }
