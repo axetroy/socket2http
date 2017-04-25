@@ -59,13 +59,13 @@ export default class Socket extends EventEmitter {
     ws.addEventListener('message', event => {
       let data = {};
       try {
-        data = { data, ...this.transform(event.data) };
+        data = { ...data, ...this.transform(event.data) };
       } catch (err) {
         console.error(err);
       }
+      console.info(data);
       let { header } = data || {};
-      const requestId = header['Request-Id'];
-      this.__resolve(requestId, data);
+      this.__resolve(header['Request-Id'], data);
       this.emit('message', data);
     });
 
@@ -92,27 +92,22 @@ export default class Socket extends EventEmitter {
   /**
    * 请求发出后要resolve
    * @param id
-   * @param data
+   * @param data    服务器返回的经过转换器的内容
    * @returns {Socket}
    */
   __resolve(id, data) {
     const request = this.req[id];
-    console.log(request);
     if (request) {
-      const { deferred, message } = request;
+      const { deferred } = request;
       const { resolve, reject } = deferred;
-      let { method, url, body, header } = message;
+      let { method, url, body, header } = data;
 
       // response的拦截器
       try {
         this.resInterceptor(method, url, body, header);
         resolve(data);
       } catch (err) {
-        reject({
-          message: 'Can not pass response interceptor',
-          error: err,
-          data
-        });
+        reject(err);
       }
 
       this.req[id] = null;
@@ -162,11 +157,7 @@ export default class Socket extends EventEmitter {
       const newMessage = this.reqInterceptor(method, url, body, header);
       message = { ...message, ...newMessage };
     } catch (err) {
-      return Promise.reject({
-        message: 'Can not pass request interceptor',
-        error: err,
-        data: message
-      });
+      return Promise.reject(err);
     }
 
     let raw = '';
@@ -174,11 +165,7 @@ export default class Socket extends EventEmitter {
     try {
       raw = JSON.stringify(message);
     } catch (err) {
-      return Promise.reject({
-        message: 'Invalid message',
-        error: err,
-        data: message
-      });
+      return Promise.reject(err);
     }
 
     this.__send(raw);
@@ -189,8 +176,7 @@ export default class Socket extends EventEmitter {
           resolve,
           reject,
           promise: this
-        },
-        message
+        }
       };
     });
   }
