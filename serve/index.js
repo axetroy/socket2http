@@ -19,34 +19,42 @@ wss.on('connection', function connection(ws) {
 
   ws.on('message', function incoming(message) {
     console.log('received:', message);
-
-    let req;
+    let request = {};
     try {
-      const request = JSON.parse(message);
-      req = {};
-      req.method = request.method;
-      req.url = request.url;
-      req.data = request.body;
-      req.headers = request.headers;
-    } catch (err) {}
-    if (req) {
-      axios(req)
-        .then(function(res) {
-          const response = { data: res.data };
-          if (req.headers.id) {
-            response.id = req.headers.id;
-          }
-          ws.send(JSON.stringify(response));
-        })
-        .catch(function(err) {
-          const response = { data: err + '' };
-          if (req.headers.id) {
-            response.id = req.headers.id;
-          }
-          ws.send(JSON.stringify(response));
-        });
-    } else {
-      ws.send('invalid request');
+      request = JSON.parse(message);
+    } catch (err) {
+      console.error(err);
     }
+
+    const { method = 'GET', url = '', body = '', header = {} } = request;
+
+    const requestId = header['Request-Id'] || null;
+
+    axios({
+      method,
+      url,
+      header,
+      data: body
+    })
+      .then(function(res) {
+        const response = {
+          method,
+          url,
+          body: res.data,
+          header: Object.assign(header, { 'Request-Id': requestId }),
+          status: 200
+        };
+        ws.send(JSON.stringify(response));
+      })
+      .catch(function(err) {
+        const response = {
+          method,
+          url,
+          body: err + '',
+          header: Object.assign(header, { 'Request-Id': requestId }),
+          status: 400
+        };
+        ws.send(JSON.stringify(response));
+      });
   });
 });
