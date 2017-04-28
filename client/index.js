@@ -63,7 +63,6 @@ export default class Socket extends EventEmitter {
       } catch (err) {
         console.error(err);
       }
-      console.info(data);
       let { header } = data || {};
       this.__resolve(header['Request-Id'], data);
       this.emit('message', data);

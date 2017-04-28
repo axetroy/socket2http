@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --hot --quiet --config webpack.config.js --host 0.0.0.0",
+    "start": "webpack-dev-server --open --hot --quiet --config webpack.config.js --host 0.0.0.0",
     "serve": "node ./serve/index.js",
     "build": "webpack --display-error-details --progress --colors",
     "watch": "webpack --display-error-details --progress --colors --watch"

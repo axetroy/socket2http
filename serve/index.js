@@ -6,7 +6,7 @@ const WebSocket = require('ws');
 const axios = require('axios');
 
 let WebSocketServer = WebSocket.Server;
-let wss = new WebSocketServer({ port: 10086 });
+let wss = new WebSocketServer({ port: 9088 });
 
 const event = new EventEmitter();
 
@@ -41,8 +41,8 @@ wss.on('connection', function connection(ws) {
           method,
           url,
           body: res.data,
-          header: Object.assign(header, { 'Request-Id': requestId }),
-          status: 200
+          header: Object.assign(res.headers, { 'Request-Id': requestId }),
+          status: res.status
         };
         ws.send(JSON.stringify(response));
       })
@@ -51,7 +51,7 @@ wss.on('connection', function connection(ws) {
           method,
           url,
           body: err + '',
-          header: Object.assign(header, { 'Request-Id': requestId }),
+          header: Object.assign(err.headers || {}, { 'Request-Id': requestId }),
           status: 400
         };
         ws.send(JSON.stringify(response));

@@ -26,11 +26,16 @@ module.exports = {
   },
   devServer: {
     contentBase: './public',
+    watchContentBase: true,
+    watchOptions: {
+      poll: true
+    },
     host: '0.0.0.0',
     port: 9000,
     noInfo: false,
     hot: true,
-    inline: true
+    inline: true,
+    compress: true
   },
   plugins: []
 };
