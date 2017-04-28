@@ -7,7 +7,7 @@
   let ws;
   function main() {
     ws = new Socket({
-      url: 'ws://localhost:9088'
+      url: 'ws://localhost:3000'
     });
 
     ws.reqInterceptor = function(method, url, body, header) {

@@ -1,22 +1,23 @@
 /**
  * Created by axetroy on 2017/3/18.
  */
-const EventEmitter = require('events').EventEmitter;
+const express = require('express');
+const http = require('http');
+const url = require('url');
 const WebSocket = require('ws');
 const axios = require('axios');
+const port = process.env.PORT || 3000;
 
-let WebSocketServer = WebSocket.Server;
-let wss = new WebSocketServer({ port: process.env.PORT || 3000 });
+const app = express();
 
-const event = new EventEmitter();
+app.use(function(req, res) {
+  res.send({ msg: 'hello' });
+});
 
-exports.event = event;
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
 wss.on('connection', function connection(ws) {
-  wss.clients.forEach(function each(client) {
-    event.emit('open', client);
-  });
-
   ws.on('message', function incoming(message) {
     console.log('received:', message);
     let request = {};
@@ -57,4 +58,8 @@ wss.on('connection', function connection(ws) {
         ws.send(JSON.stringify(response));
       });
   });
+});
+
+server.listen(port, function listening() {
+  console.log('Listening on %d', server.address().port);
 });
