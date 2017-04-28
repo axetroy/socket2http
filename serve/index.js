@@ -6,7 +6,7 @@ const WebSocket = require('ws');
 const axios = require('axios');
 
 let WebSocketServer = WebSocket.Server;
-let wss = new WebSocketServer({ port: 9088 });
+let wss = new WebSocketServer({ port: process.env.PORT || 3000 });
 
 const event = new EventEmitter();
 
