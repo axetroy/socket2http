@@ -1,7 +1,13 @@
 {
   "name": "socket2http",
   "version": "1.0.0",
-  "description": "",
+  "description": "用于socket的反向代理http请求",
+  "keywords": [
+    "socket",
+    "http",
+    "cros",
+    "proxy"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
