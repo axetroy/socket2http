@@ -1,5 +1,7 @@
 # Socket2http
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/axetroy/socket2http.svg)](https://greenkeeper.io/)
+
 一个用socket代替http的库
 
 ## 使用
