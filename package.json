@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@axetroy/event-emitter.js": "^1.2.1",
-    "axios": "^0.16.1",
+    "axios": "^0.17.0",
     "express": "^4.15.2",
     "ws": "^3.0.0"
   }
